@@ -4,11 +4,7 @@ const s3Zip = require('s3-zip');
 const S3BUCKETNAME = 'deepgesture-expstorage';
 const REGION = 'us-east-2';
 
-AWS.config.update({region: REGION});
-AWS.config.getCredentials((err) => {
-  if (err) throw err;
-});
-
+AWS.config.loadFromPath(process.env.awsconfigpath);
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
