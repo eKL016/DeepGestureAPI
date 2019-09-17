@@ -2,12 +2,18 @@ const ExperimentModel = require('../models/experiment');
 
 module.exports = {
   createSingle: async (ctx) => {
-    const success = await ExperimentModel.createSingle(ctx.request.body);
-    ctx.body = success;
+    await ExperimentModel.createSingle(ctx.request.body);
+    ctx.body ={
+      'statusCode': 200,
+      'message': 'Uploaded',
+    };
   },
   getList: async (ctx) => {
     const listofExperiments = await ExperimentModel.getList();
-    ctx.body = listofExperiments;
+    ctx.body = {
+      'statusCode': 200,
+      'payload': listofExperiments,
+    };
   },
   getSingle: async (ctx) => {
     const id = ctx.params.id;
@@ -18,12 +24,19 @@ module.exports = {
       ctx.response.attachment(id+'.zip');
       ctx.body = await ExperimentModel.getSingle(id, {download: true});
     } else {
-      ctx.body = await ExperimentModel.getSingle(id, {});
+      const exp = await ExperimentModel.getSingle(id, {});
+      ctx.body = {
+        'statusCode': 200,
+        'payload': exp,
+      };
     }
   },
   deleteSingle: async (ctx) => {
     const id = ctx.params.id;
-    const success = await ExperimentModel.deleteSingle(id);
-    ctx.body = success;
+    await ExperimentModel.deleteSingle(id);
+    ctx.body = {
+      'statusCode': 200,
+      'message': 'Deleted',
+    };
   },
 };

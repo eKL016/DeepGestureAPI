@@ -9,33 +9,28 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
   createSingle: async (jsonBody) => {
+    const dynamoparams = {
+      Expected: {
+        'id': {
+          Exists: false,
+        },
+      },
+      Item: {
+        id: jsonBody.id,
+        dateAndTime: Date().toLocaleString(),
+      },
+      ReturnItemCollectionMetrics: 'SIZE',
+      TableName: 'Experiment',
+    };
     const s3params = {
       Body: JSON.stringify(jsonBody),
       Bucket: S3BUCKETNAME,
       Key: jsonBody.id + '.json',
     };
-    const dynamoparams = {
-      Expected: {
-        Exist: false,
-      },
-      ReturnItemCollectionMetrics: 'SIZE',
-      TableName: 'Experiment',
-    };
     // eslint-disable-next-line prefer-const
-    let s3return = await s3.putObject(s3params).promise();
-    s3return.id = jsonBody.id;
-    s3return.dateAndTime = new Date().toLocaleString();
-    dynamoparams.Item = s3return;
-    try {
-      return await docClient.put(dynamoparams).promise();
-    } catch (err) {
-      const params = {
-        Bucket: S3BUCKETNAME,
-        Key: s3params.Key,
-      };
-      await s3.deleteObject(params).promise();
-      throw err;
-    }
+    await docClient.put(dynamoparams).promise();
+    await s3.putObject(s3params).promise();
+    return true;
   },
 
   getList: async () => {
