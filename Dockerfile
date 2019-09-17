@@ -9,6 +9,7 @@ COPY pm2.json .
 # Install app dependencies
 ENV NPM_CONFIG_LOGLEVEL warn
 ENV AWS_REGION us-east-2
+ENV TZ Asia/Taipei
 
 RUN npm install --production
 
