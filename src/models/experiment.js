@@ -4,7 +4,7 @@ const s3Zip = require('s3-zip');
 const S3BUCKETNAME = 'deepgesture-expstorage';
 const REGION = 'us-east-2';
 
-AWS.config.loadFromPath(process.env.awsconfigpath);
+// AWS.config.loadFromPath(process.env.awsconfigpath);
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
@@ -15,6 +15,10 @@ module.exports = {
       Key: jsonBody.id + '.json',
     };
     const dynamoparams = {
+      Expected: {
+        Exist: false,
+      },
+      ReturnItemCollectionMetrics: 'SIZE',
       TableName: 'Experiment',
     };
     // eslint-disable-next-line prefer-const
@@ -27,7 +31,7 @@ module.exports = {
     } catch (err) {
       const params = {
         Bucket: S3BUCKETNAME,
-        Key: S3.params.Key,
+        Key: s3params.Key,
       };
       await s3.deleteObject(params).promise();
       throw err;
@@ -57,17 +61,18 @@ module.exports = {
   },
 
   deleteSingle: async (id) => {
+    const s3params = {
+      Bucket: S3BUCKETNAME,
+      Key: id+'.json',
+    };
     const dynamoparams = {
       Key: {
         'id': id,
       },
       TableName: 'Experiment',
-    };
-    const s3params = {
-      Bucket: S3BUCKETNAME,
-      Key: id+'.json',
+      ReturnItemCollectionMetrics: 'SIZE',
     };
     await s3.deleteObject(s3params).promise();
-    await docClient.delete(dynamoparams).promise();
+    return await docClient.delete(dynamoparams).promise();
   },
 };

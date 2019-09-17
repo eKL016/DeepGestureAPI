@@ -13,7 +13,7 @@ app.context.api = true;
 app.use(compress());
 app.use(bodyParser({jsonLimit: '5mb'}));
 app.use(logger());
-app.use( async (ctx, next) => {
+app.use( loadTimeLogger = async (ctx, next) => {
   const startTime = Date.now();
   await next();
   const ms = Date.now() - startTime;
