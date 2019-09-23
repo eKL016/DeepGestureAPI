@@ -5,7 +5,7 @@ module.exports = {
     try {
       await ExperimentModel.createSingle(ctx.request.body);
     } catch (err) {
-      if (err instanceof ConditionalCheckFailedException) {
+      if (err.code === 'ConditionalCheckFailedException') {
         ctx.throw(409, 'Target Already Exists');
       }
     }
