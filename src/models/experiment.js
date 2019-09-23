@@ -38,7 +38,7 @@ module.exports = {
   getList: async () => {
     const params = {
       TableName: 'Experiment',
-      ProjectionExpression: 'id, dateAndTime, ETag',
+      ProjectionExpression: 'id, dateAndTime, username, situation',
     };
     return await docClient.scan(params).promise();
   },
