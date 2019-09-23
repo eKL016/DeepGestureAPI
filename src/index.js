@@ -11,7 +11,7 @@ const app = new Koa();
 app.context.onerror = errorHandler;
 app.context.api = true;
 app.use(compress());
-app.use(bodyParser({jsonLimit: '5mb'}));
+app.use(bodyParser({jsonLimit: '20mb'}));
 app.use(logger());
 app.use( loadTimeLogger = async (ctx, next) => {
   const startTime = Date.now();
