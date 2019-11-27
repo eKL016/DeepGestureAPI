@@ -19,6 +19,7 @@ module.exports = {
         id: jsonBody.id,
         username: jsonBody.subject.id,
         situation: jsonBody.subject.situation,
+        subject: jsonBody.subject,
         dateAndTime: Date().toLocaleString(),
       },
       ReturnItemCollectionMetrics: 'SIZE',
