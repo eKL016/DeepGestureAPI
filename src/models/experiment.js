@@ -9,6 +9,13 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports = {
   createSingle: async (jsonBody) => {
+
+    let subject = jsonBody.subject;
+    const username = subject.id;
+    const sit = subject.situation;
+    delete subject['id'];
+    delete subject['situation'];
+    
     const dynamoparams = {
       Expected: {
         'id': {
@@ -17,9 +24,9 @@ module.exports = {
       },
       Item: {
         id: jsonBody.id,
-        username: jsonBody.subject.id,
-        situation: jsonBody.subject.situation,
-        subject: jsonBody.subject,
+        username: username,
+        situation: sit,
+        subject: subject,
         dateAndTime: Date().toLocaleString(),
       },
       ReturnItemCollectionMetrics: 'SIZE',
