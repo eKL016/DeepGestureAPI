@@ -9,10 +9,17 @@ jobs:
     runs-on: self-hosted
 
     steps:
+
+    - name: Pull with SSH key
+      run: git pull 
+      working-directory: /home/ubuntu/DeepGestureAPI
+
     - name: Shutdown the existing container
       run: docker stop $(docker ps -q --filter ancestor=deepgestureapi)
+
     - name: Build a new container
       run: docker build -t deepgestureapi .
       working-directory: /home/ubuntu/DeepGestureAPI
+
     - name: Start the new container
       run: docker run --rm -d -p 80:3000 deepgestureapi
