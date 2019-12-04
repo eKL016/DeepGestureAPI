@@ -15,6 +15,7 @@ module.exports = {
       'message': 'Created',
     };
   },
+
   getList: async (ctx) => {
     const listofExperiments = await ExperimentModel.getList();
     ctx.body = {
@@ -22,6 +23,7 @@ module.exports = {
       'payload': listofExperiments,
     };
   },
+
   getSingle: async (ctx) => {
     const id = ctx.params.id;
     const download = ctx.query.download=='true';
@@ -38,6 +40,25 @@ module.exports = {
       };
     }
   },
+
+  downloadAll: async (ctx) => {
+    const listofExperiments = await ExperimentModel.getList();
+    const filesArray = listofExperiments.Items.map(x => x.id + '.json');
+    const filesStream = await ExperimentModel.getZippedFileStream(filesArray);
+    
+    ctx.compress = false;
+    ctx.res.writeHead(200, {
+      'Content-Type': 'application/octet-stream',
+      'Content-Disposition': 'filename="all_record.zip"'
+    });
+    await new Promise((resolve, reject) => {
+      filesStream.pipe(ctx.res);
+      filesStream.on('error', reject);
+      filesStream.on('end', resolve);
+    })
+    ctx.res.end();
+  },
+
   deleteSingle: async (ctx) => {
     const id = ctx.params.id;
     await ExperimentModel.deleteSingle(id);

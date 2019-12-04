@@ -3,6 +3,9 @@ const s3 = new AWS.S3();
 const s3Zip = require('s3-zip');
 const S3BUCKETNAME = 'deepgesture-expstorage';
 const REGION = 'us-east-2';
+const fs = require('fs');
+const join = require('path').join;
+const XmlStream = require('xml-stream');
 
 // AWS.config.loadFromPath(process.env.awsconfigpath);
 const docClient = new AWS.DynamoDB.DocumentClient();
@@ -61,6 +64,11 @@ module.exports = {
       const s3return = await s3.getObject(s3params).promise();
       return JSON.parse(s3return.Body);
     }
+  },
+
+  getZippedFileStream: async (files) => {
+    return s3Zip
+      .archive({ region: REGION, bucket: S3BUCKETNAME}, '', files);
   },
 
   deleteSingle: async (id) => {

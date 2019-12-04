@@ -18,15 +18,16 @@
   "homepage": "https://github.com/eKL016/DeepGestureAPI#readme",
   "dependencies": {
     "aws-sdk": "^2.528.0",
+    "fresh": "^0.5.2",
     "koa-404-handler": "0.0.2",
     "koa-better-error-handler": "^3.0.3",
     "koa-bodyparser": "^4.2.1",
     "koa-compress": "^3.0.0",
+    "koa-helmet": "^5.2.0",
     "koa-logger": "^3.2.1",
     "koa-router": "^7.4.0",
     "koa2": "^2.0.0-alpha.7",
-    "s3-zip": "^3.1.2",
-    "koa-helmet": "^5.2.0"
+    "s3-zip": "^3.1.2"
   },
   "devDependencies": {
     "eslint": "^6.4.0",
