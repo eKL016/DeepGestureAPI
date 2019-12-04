@@ -3,9 +3,6 @@ const s3 = new AWS.S3();
 const s3Zip = require('s3-zip');
 const S3BUCKETNAME = 'deepgesture-expstorage';
 const REGION = 'us-east-2';
-const fs = require('fs');
-const join = require('path').join;
-const XmlStream = require('xml-stream');
 
 // AWS.config.loadFromPath(process.env.awsconfigpath);
 const docClient = new AWS.DynamoDB.DocumentClient();
