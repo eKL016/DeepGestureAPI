@@ -13,8 +13,6 @@ module.exports = {
     let subject = jsonBody.subject;
     const username = subject.id;
     const sit = subject.situation;
-    delete subject['id'];
-    delete subject['situation'];
     
     const dynamoparams = {
       Expected: {
