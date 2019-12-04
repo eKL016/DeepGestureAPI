@@ -49,7 +49,7 @@ module.exports = {
     ctx.compress = false;
     ctx.res.writeHead(200, {
       'Content-Type': 'application/octet-stream',
-      'Content-Disposition': 'filename="all_record.zip"'
+      'Content-Disposition': 'filename="experiments.zip"'
     });
     await new Promise((resolve, reject) => {
       filesStream.pipe(ctx.res);
